@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -6,5 +7,32 @@
   <body>
     <h1>Welcome to LearnSmart AI Doubt Solver</h1>
     <p>Your AI Education App is live!</p>
+
+    <!-- Chatbot UI -->
+    <textarea id="question" placeholder="अपना सवाल लिखें..."></textarea>
+    <button onclick="askAI()">समाधान पूछें</button>
+    <pre id="output"></pre>
+
+    <!-- JavaScript AI Code यहाँ डाले -->
+    <script>
+      async function askAI() {
+        const question = document.getElementById('question').value;
+        document.getElementById('output').innerText = "Processing...";
+        const response = await fetch("https://api.openai.com/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer OPENAI_API_KEY" // ← यहाँ अपनी OpenAI API Key डालें
+          },
+          body: JSON.stringify({
+            model: "gpt-3.5-turbo",
+            messages: [{ role: "user", content: question }]
+          })
+        });
+        const data = await response.json();
+        document.getElementById('output').innerText = data.choices?.[0]?.message?.content || "कोई उत्तर नहीं मिला";
+      }
+    </script>
+    <!--↑↑↑-->
   </body>
 </html>
